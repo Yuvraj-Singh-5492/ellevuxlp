@@ -36,35 +36,19 @@
       overflow-x: hidden;
     }
 
-    /* Ambient glows */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(140px);
+    /* Canvas replaces CSS filter blobs */
+    #demo-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
       pointer-events: none;
-      will-change: transform, opacity;
-      opacity: 0.6;
-      z-index: -1;
     }
-    .blob-warm {
-      width: 800px; height: 500px;
-      background: radial-gradient(circle, rgba(255,100,50,0.15) 0%, transparent 70%);
-      top: -100px; right: -150px;
-      animation: floatA 22s ease-in-out infinite alternate;
-    }
-    .blob-blue {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(50,120,255,0.1) 0%, transparent 70%);
-      bottom: 100px; left: -100px;
-      animation: floatB 25s ease-in-out infinite alternate;
-    }
-    @keyframes floatA {
-      0% { transform: translate(0,0) scale(1); }
-      100% { transform: translate(-50px,50px) scale(1.1); }
-    }
-    @keyframes floatB {
-      0% { transform: translate(0,0) scale(1); }
-      100% { transform: translate(50px,-50px) scale(1.1); }
+
+    main {
+      position: relative;
+      z-index: 1;
     }
 
     ::-webkit-scrollbar { width: 4px; }
@@ -80,10 +64,11 @@
       justify-content: space-between;
       padding: 0 48px;
       height: 110px;
-      background: rgba(3,3,3,0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(3,3,3,0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
+      transform: translateZ(0);
     }
     .nav-logo {
       font-family: var(--font-head);
@@ -167,9 +152,7 @@
 
     /* DEMO PLAYER */
     .demo-player {
-      background: rgba(10,10,10,0.6);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(10,10,10,0.96);
       border: 1px solid var(--border-light);
       border-radius: 20px;
       overflow: hidden;
@@ -506,8 +489,7 @@
 </head>
 <body>
 
-  <div class="blob blob-warm"></div>
-  <div class="blob blob-blue"></div>
+  <canvas id="demo-canvas" aria-hidden="true"></canvas>
 
   <nav>
       <a href="index.html" class="nav-logo">
@@ -712,6 +694,53 @@
     });
 
     updateUI();
+  </script>
+  <script>
+    /* ── CANVAS GLOW RENDERER ── same approach as index.html ── */
+    (function () {
+      const canvas = document.getElementById('demo-canvas');
+      const ctx = canvas.getContext('2d');
+
+      const blobs = [
+        { xf: 0.88, yf: 0.05, r: 380, color: [255, 90, 30],  a: 0.13, dx: -0.016, dy: 0.010 },
+        { xf: -0.05, yf: 0.7, r: 320, color: [40, 100, 255], a: 0.09, dx: 0.014,  dy: -0.010 },
+      ];
+
+      let W, H;
+      function resize() {
+        W = canvas.offsetWidth;
+        H = canvas.offsetHeight;
+        canvas.width  = W;
+        canvas.height = H;
+        blobs[0].x = W * blobs[0].xf; blobs[0].y = H * blobs[0].yf;
+        blobs[1].x = W * blobs[1].xf; blobs[1].y = H * blobs[1].yf;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      let frame = 0;
+      function draw() {
+        requestAnimationFrame(draw);
+        if (++frame % 2 !== 0) return; // ~30fps, blobs are slow
+        ctx.clearRect(0, 0, W, H);
+        for (const b of blobs) {
+          b.x += b.dx; b.y += b.dy;
+          const padX = W * 0.3, padY = H * 0.3;
+          if (b.x < -padX || b.x > W + padX) b.dx *= -1;
+          if (b.y < -padY || b.y > H + padY) b.dy *= -1;
+          const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+          const [r, gv, bv] = b.color;
+          g.addColorStop(0,   `rgba(${r},${gv},${bv},${b.a})`);
+          g.addColorStop(0.5, `rgba(${r},${gv},${bv},${b.a * 0.4})`);
+          g.addColorStop(1,   `rgba(${r},${gv},${bv},0)`);
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      draw();
+    })();
   </script>
 
 </body>
