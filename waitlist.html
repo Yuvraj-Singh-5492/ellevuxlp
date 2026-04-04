@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join the Waitlist — Ellevux</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #030303;
+      --bg2: #0a0a0a;
+      --bg3: #121212;
+      --border: rgba(255,255,255,0.08);
+      --border-light: rgba(255,255,255,0.12);
+      --accent: #ff4d00;
+      --accent-dim: rgba(255,77,0,0.1);
+      --text: #ffffff;
+      --text-dim: #777;
+      --text-mid: #aaa;
+      --error: #ff4d4d;
+      --font-head: 'Bricolage Grotesque', sans-serif;
+      --font-body: 'Instrument Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 110px;
+      background: rgba(3,3,3,0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo img { height: 84px; display: block; }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .page-grid {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* LEFT SIDE */
+    .left-panel {
+      padding: 170px 64px 80px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 80% at 30% 50%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 30% 50%, black 30%, transparent 100%);
+    }
+
+    .left-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,77,0,0.12) 0%, transparent 70%);
+      top: 40%; left: 20%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      filter: blur(140px);
+      will-change: transform;
+    }
+
+    .left-content {
+      position: relative;
+    }
+
+    .page-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .page-title {
+      font-family: var(--font-head);
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .page-title .accent {
+      background: linear-gradient(to bottom, #fff, #ff4d00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-sub {
+      font-size: 14px;
+      color: var(--text-mid);
+      max-width: 380px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+    }
+
+    /* PROMISES */
+    .promise-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .promise-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .promise-check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,122,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .promise-check svg { color: var(--accent); }
+
+    /* STATS ROW */
+    .stat-row {
+      display: flex;
+      gap: 32px;
+      margin-top: 48px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-val {
+      font-family: var(--font-head);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* RIGHT SIDE */
+    .right-panel {
+      padding: 170px 64px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-card {
+      background: rgba(10,10,10,0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 440px;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    }
+
+    .form-card-header {
+      margin-bottom: 32px;
+    }
+
+    .form-card-title {
+      font-family: var(--font-head);
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .form-card-sub {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 14px;
+      padding: 13px 16px;
+      outline: none;
+      transition: all 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input::placeholder { color: var(--text-dim); }
+
+    input:focus {
+      border-color: rgba(0,229,122,0.4);
+      box-shadow: 0 0 0 3px rgba(0,229,122,0.06);
+    }
+
+    input.error {
+      border-color: var(--error);
+    }
+
+    .field-error {
+      font-size: 11px;
+      color: var(--error);
+      margin-top: 6px;
+      display: none;
+    }
+
+    .field-error.show { display: block; }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 15px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+      transition: opacity 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-note {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-align: center;
+      margin-top: 16px;
+      line-height: 1.7;
+    }
+
+    /* SUCCESS STATE */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .success-state.show { display: block; }
+
+    .success-icon {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,122,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      animation: scaleIn 0.4s ease;
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .success-title {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .success-sub {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .success-position {
+      display: inline-block;
+      margin-top: 24px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,122,0.2);
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      padding: 8px 20px;
+      border-radius: 100px;
+    }
+
+    /* SOCIAL PROOF */
+    .social-proof {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .avatars {
+      display: flex;
+    }
+
+    .avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--bg2);
+      background: var(--bg3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      margin-left: -8px;
+      font-family: var(--font-head);
+      font-weight: 700;
+    }
+
+    .avatar:first-child { margin-left: 0; }
+
+    .avatar-1 { background: #1a3a2a; color: #00e57a; }
+    .avatar-2 { background: #1a2a3a; color: #4da6ff; }
+    .avatar-3 { background: #2a1a3a; color: #b47aff; }
+    .avatar-4 { background: #3a2a1a; color: #ffb347; }
+
+    .social-text {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .social-text strong { color: var(--accent); font-weight: 400; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: var(--font-head);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .footer-logo img { height: 72px; display: block; }
+    .footer-logo span { color: var(--accent); }
+
+    .footer-copy { font-size: 12px; color: var(--text-dim); }
+    .footer-social { display: flex; gap: 16px; align-items: center; }
+    .social-link { color: var(--text-dim); transition: color 0.2s; display: flex; align-items: center; }
+    .social-link:hover { color: var(--text); }
+
+    /* INTL TEL INPUT OVERRIDES */
+    .iti { width: 100%; display: block !important; margin-bottom: 20px; }
+    .iti__country-list { background: #121212 !important; border: 1px solid var(--border) !important; color: #fff !important; border-radius: 12px !important; margin-top: 8px !important; box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important; font-family: var(--font-body); }
+    .iti__country { padding: 12px 16px !important; transition: background 0.2s; }
+    .iti__country:hover, .iti__country.iti__highlight { background: #1a1a1a !important; color: var(--accent) !important; }
+    .iti__flag-container { padding: 2px !important; }
+    .iti__selected-flag { background: transparent !important; border-radius: 8px !important; padding: 0 16px !important; }
+    .iti__arrow { border-top-color: var(--text-dim) !important; }
+    .iti__arrow--up { border-bottom-color: var(--text-dim) !important; }
+    .iti input { padding-left: 56px !important; width: 100% !important; }
+    .iti__divider { border-bottom: 1px solid var(--border) !important; }
+
+    .nav-mobile-actions { display: none; }
+    .mobile-btn-demo { font-size: 11px; font-weight: 500; color: var(--text-mid); text-decoration: none; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; }
+    .mobile-btn-cta { font-size: 11px; font-weight: 600; background: var(--accent); color: #fff; text-decoration: none; padding: 6px 12px; border-radius: 6px; }
+
+    /* LOADING SPINNER */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(8,11,15,0.3);
+      border-top-color: var(--bg);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 900px) {
+      .page-grid { grid-template-columns: 1fr; }
+      .left-panel { display: none; }
+      .right-panel { padding: 100px 24px 60px; align-items: center; }
+      .form-card { max-width: 100%; width: 100%; }
+      nav { padding: 0 16px; height: 80px; }
+      .nav-logo img { height: 52px !important; }
+      .nav-links { display: none; }
+      .nav-mobile-actions { display: flex; align-items: center; gap: 8px; }
+      footer { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+      <a href="index.html" class="nav-logo">
+        <img src="logo-official.png" alt="Ellevux Logo">
+      </a>
+      <div class="nav-mobile-actions">
+        <a href="demo.html" class="mobile-btn-demo">Demo</a>
+        <a href="waitlist.html" class="mobile-btn-cta">Get Access</a>
+      </div>
+    <ul class="nav-links">
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#setup">How It Works</a></li>
+      <li><a href="demo.html">Demo</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-grid">
+
+    <!-- LEFT -->
+    <div class="left-panel">
+      <div class="left-glow"></div>
+      <div class="left-content">
+        <div class="page-label">// Early Access</div>
+        <h1 class="page-title">
+          Be first.<br>
+          Book more.<br>
+          <span>Scale faster.</span>
+        </h1>
+        <p class="page-sub">
+          Join the Ellevux waitlist and we'll set you up within 24 hours of launch. Early members get priority onboarding.
+        </p>
+
+        <ul class="promise-list">
+          <li>
+            <span class="promise-check">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Full setup completed within 24 hours
+          </li>
+          <li>
+            <span class="promise-check">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Every inbound call answered in under 12 seconds
+          </li>
+          <li>
+            <span class="promise-check">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Google Calendar sync, zero manual entry
+          </li>
+
+          <li>
+            <span class="promise-check">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Zero staff needed after setup
+          </li>
+        </ul>
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <span class="stat-val">18% → 85%</span>
+            <span class="stat-label">Booking rate lift</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val">+372%</span>
+            <span class="stat-label">More bookings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-panel">
+      <div class="form-card">
+        <div class="form-card-header" id="formHeader">
+          <div class="form-card-title">Join the Waitlist</div>
+          <div class="form-card-sub">Takes 30 seconds. We'll be in touch within 24 hours.</div>
+        </div>
+
+        <!-- FORM -->
+        <div id="formBody">
+          <div class="form-group">
+            <label for="businessName">Business Name</label>
+            <input type="text" id="businessName" name="businessName" placeholder="Summit Roofing Co." autocomplete="organization" />
+            <div class="field-error" id="businessNameError">Please enter your business name.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="you@yourbusiness.com" autocomplete="email" />
+            <div class="field-error" id="emailError">Please enter a valid email address.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" />
+            <div class="field-error" id="phoneError">Please enter a valid 10-digit phone number.</div>
+          </div>
+
+          <button class="submit-btn" id="submitBtn" type="button">
+            <span id="btnText">Claim My Spot</span>
+            <div class="spinner" id="spinner"></div>
+            <svg id="btnArrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <div class="form-note">
+            No spam. We'll reach out to schedule your setup call.
+          </div>
+
+          <div class="social-proof">
+            <div class="avatars">
+              <div class="avatar avatar-1">JR</div>
+              <div class="avatar avatar-2">SM</div>
+              <div class="avatar avatar-3">TK</div>
+              <div class="avatar avatar-4">AL</div>
+            </div>
+            <div class="social-text">
+              <strong>47 businesses</strong> already on the waitlist
+            </div>
+          </div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="success-state" id="successState">
+          <div class="success-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <path d="M6 14l5 5 11-11" stroke="#00e57a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="success-title">You're on the list.</div>
+          <div class="success-sub">We'll reach out within 24 hours to get Ellevux set up for your business.</div>
+          <div class="success-position">Waitlist confirmed ✓</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+      <a href="index.html" class="footer-logo">
+        <img src="logo-official.png" alt="Ellevux Logo">
+      </a>
+    <div class="footer-social">
+      <div class="footer-copy">© 2025 Ellevux</div>
+      <a href="https://www.instagram.com/ellevux/" target="_blank" class="social-link" title="Follow on Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+  <script>
+    const submitBtn = document.getElementById('submitBtn');
+    const spinner = document.getElementById('spinner');
+    const btnText = document.getElementById('btnText');
+    const btnArrow = document.getElementById('btnArrow');
+    const formBody = document.getElementById('formBody');
+    const successState = document.getElementById('successState');
+    const formHeader = document.getElementById('formHeader');
+
+    function showError(inputId, errorId, show) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      if (show) {
+        input.classList.add('error');
+        error.classList.add('show');
+      } else {
+        input.classList.remove('error');
+        error.classList.remove('show');
+      }
+    }
+
+    // Clear error on input
+    ['businessName', 'email', 'phone'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        document.getElementById(id).classList.remove('error');
+        document.getElementById(id + 'Error').classList.remove('show');
+      });
+    });
+
+    const phoneInput = document.getElementById('phone');
+    const iti = window.intlTelInput(phoneInput, {
+      preferredCountries: ["us", "gb", "ca", "au"],
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function validatePhone() {
+      const num = phoneInput.value.replace(/\D/g, '');
+      return num.length === 10;
+    }
+
+    phoneInput.addEventListener('input', function () {
+      let val = this.value.replace(/\D/g, '');
+      if (val.length > 10) {
+        val = val.slice(0, 10);
+      }
+      this.value = val;
+    });
+
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbhstlsw1m9oZczSUrNNEb5SR9-RUqqUwwtc4_Z5E1pWzthQXsNa1a8D7yIriSitkRiw/exec';
+
+    submitBtn.addEventListener('click', async () => {
+      const business = document.getElementById('businessName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = iti.getNumber();
+
+      let valid = true;
+
+      if (!business) { showError('businessName', 'businessNameError', true); valid = false; }
+      else showError('businessName', 'businessNameError', false);
+
+      if (!validateEmail(email)) { showError('email', 'emailError', true); valid = false; }
+      else showError('email', 'emailError', false);
+
+      if (!validatePhone()) { showError('phone', 'phoneError', true); valid = false; }
+      else showError('phone', 'phoneError', false);
+
+      if (!valid) return;
+
+      // Start submission state
+      submitBtn.disabled = true;
+      btnText.style.display = 'none';
+      btnArrow.style.display = 'none';
+      spinner.style.display = 'block';
+
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ businessName: business, email: email, phone: phone })
+        });
+
+        // After fetch resolves (even for no-cors), show success
+        setTimeout(() => {
+          formBody.style.display = 'none';
+          formHeader.style.display = 'none';
+          successState.classList.add('show');
+        }, 1200);
+
+      } catch (error) {
+        console.error('Submission error:', error);
+        alert('Something went wrong. Please check your connection and try again.');
+        submitBtn.disabled = false;
+        btnText.style.display = 'inline';
+        btnArrow.style.display = 'block';
+        spinner.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
